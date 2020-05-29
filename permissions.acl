@@ -129,7 +129,7 @@ rule Receiver_R_Carrier {
     resource: "it.freighttrust.com.Carrier"
     action: ALLOW
 }
- 
+
 rule NetworkAdmin_RU_Carrier {
     description: "Grant NetworkAdmins access to Carrier resources"
     participant: "org.interchange.network.system.NetworkAdmin"
@@ -137,7 +137,7 @@ rule NetworkAdmin_RU_Carrier {
     resource: "it.freighttrust.com.Carrier"
     action: ALLOW
 }
- 
+
 rule NetworkAdmin_RU_Shipper {
     description: "Grant NetworkAdmins access to Shipper resources"
     participant: "org.interchange.network.system.NetworkAdmin"
@@ -145,7 +145,7 @@ rule NetworkAdmin_RU_Shipper {
     resource: "it.freighttrust.com.Shipper"
     action: ALLOW
 }
- 
+
 rule NetworkAdmin_RU_Receiver {
     description: "Grant NetworkAdmins access to Receiver resources"
     participant: "org.interchange.network.system.NetworkAdmin"
