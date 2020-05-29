@@ -13,9 +13,9 @@ done
 
 cd fabric/freighttrust-network
 echo "generating fabric"
-yes | ./fr8.sh -m generate -c $CHANNEL_NAME
+yes | ./fr8.sh -m generate -c "$CHANNEL_NAME"
 echo "generating complete"
 echo "starting fabric"
-yes | ./fr8.sh -m up -s couchdb -c $CHANNEL_NAME -f docker-compose-cli.yaml -a -l node
+yes | ./fr8.sh -m up -s couchdb -c "$CHANNEL_NAME" -f docker-compose-cli.yaml -a -l node
 echo "starting fabric complete"
 cd ../..

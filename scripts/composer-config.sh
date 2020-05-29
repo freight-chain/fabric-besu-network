@@ -14,25 +14,25 @@ function replacePaths() {
   mkdir composer/org1
   mkdir composer/org2
 
-  cp ${SIZE}/network-org1.json composer/org1/$ORG1_DOMAIN.json
-  cp ${SIZE}/network-org2.json composer/org2/$ORG2_DOMAIN.json
-  cp ${SIZE}/network.json composer/network.json
+  cp "$SIZE"/network-org1.json composer/org1/"$ORG1_DOMAIN".json
+  cp "$SIZE"/network-org2.json composer/org2/"$ORG2_DOMAIN".json
+  cp "$SIZE"/network.json composer/network.json
 
   #sed $OPTS "s@PROJECT_PATH@${PWD}@g" composer/org1/$ORG1_DOMAIN.json composer/org2/$ORG2_DOMAIN.json composer/network.json
-  sed $OPTS "s@CRYPTO_CONFIG@${CRYPTO_CONFIG}@g" composer/org1/$ORG1_DOMAIN.json composer/org2/$ORG2_DOMAIN.json composer/network.json
-  sed $OPTS "s@CHANNEL_NAME@${CHANNEL_NAME}@g" composer/org1/$ORG1_DOMAIN.json composer/org2/$ORG2_DOMAIN.json composer/network.json
-  sed $OPTS "s@ORG0_ADDRESS@${ORG0_ADDRESS}@g" composer/org1/$ORG1_DOMAIN.json composer/org2/$ORG2_DOMAIN.json composer/network.json
-  sed $OPTS "s@ORG1_ADDRESS@${ORG1_ADDRESS}@g" composer/org1/$ORG1_DOMAIN.json composer/org2/$ORG2_DOMAIN.json composer/network.json
-  sed $OPTS "s@ORG2_ADDRESS@${ORG2_ADDRESS}@g" composer/org1/$ORG1_DOMAIN.json composer/org2/$ORG2_DOMAIN.json composer/network.json
+  sed "$OPTS" "s@CRYPTO_CONFIG@$CRYPTO_CONFIG@g" composer/org1/"$ORG1_DOMAIN".json composer/org2/"$ORG2_DOMAIN".json composer/network.json
+  sed "$OPTS" "s@CHANNEL_NAME@$CHANNEL_NAME@g" composer/org1/"$ORG1_DOMAIN".json composer/org2/"$ORG2_DOMAIN".json composer/network.json
+  sed "$OPTS" "s@ORG0_ADDRESS@$ORG0_ADDRESS@g" composer/org1/"$ORG1_DOMAIN".json composer/org2/"$ORG2_DOMAIN".json composer/network.json
+  sed "$OPTS" "s@ORG1_ADDRESS@$ORG1_ADDRESS@g" composer/org1/"$ORG1_DOMAIN".json composer/org2/"$ORG2_DOMAIN".json composer/network.json
+  sed "$OPTS" "s@ORG2_ADDRESS@$ORG2_ADDRESS@g" composer/org1/"$ORG1_DOMAIN".json composer/org2/"$ORG2_DOMAIN".json composer/network.json
   if [ "$ARCH" == "Darwin" ]; then
-    rm composer/org1/$ORG1_DOMAIN.jsont composer/org2/$ORG2_DOMAIN.jsont composer/network.jsont
+    rm composer/org1/"$ORG1_DOMAIN".jsont composer/org2/"$ORG2_DOMAIN".jsont composer/network.jsont
   fi
   echo "copying network/org json config complete"
 }
 
 ENVIRONMENT="local"
 
-CRYPTO_CONFIG=${PWD}/fabric-samples/first-network/crypto-config
+CRYPTO_CONFIG=$PWD/fabric-samples/first-network/crypto-config
 #CRYPTO_CONFIG=/home/ocean/fabric-samples/first-network/crypto-config
 
 CHANNEL_NAME="freighttrust-channel"
@@ -82,8 +82,8 @@ echo "*********** STARTING ***********"
 echo "removing old generated files"
 rm -rf composer/org1
 rm -rf composer/org2
-rm $ORG1_ADMIN@$NETWORK_NAME.card
-rm $ORG2_ADMIN@$NETWORK_NAME.card
+rm "$ORG1_ADMIN@$NETWORK_NAME".card
+rm "$ORG2_ADMIN@$NETWORK_NAME".card
 rm composer/network.json
 echo "removing old generated files complete"
 echo "generating new files"
