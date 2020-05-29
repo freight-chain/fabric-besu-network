@@ -4,9 +4,7 @@
   "version": "1.0.0",
   "channels": {
     "CHANNEL_NAME": {
-      "orderers": [
-        "orderer.blockarray.cloud"
-      ],
+      "orderers": ["orderer.blockarray.cloud"],
       "peers": {
         "peer0.arrayofblocks.blockarray.cloud": {
           "endorsingPeer": true,
@@ -26,21 +24,13 @@
   "organizations": {
     "ArrayOfBlocks": {
       "mspid": "ArrayOfBlocksMSP",
-      "peers": [
-        "peer0.arrayofblocks.blockarray.cloud"
-      ],
-      "certificateAuthorities": [
-        "ca.arrayofblocks.blockarray.cloud"
-      ]
+      "peers": ["peer0.arrayofblocks.blockarray.cloud"],
+      "certificateAuthorities": ["ca.arrayofblocks.blockarray.cloud"]
     },
     "SpeedyDelivery": {
       "mspid": "SpeedyDeliveryMSP",
-      "peers": [
-        "peer0.speedydelivery.blockarray.cloud"
-      ],
-      "certificateAuthorities": [
-        "ca.speedydelivery.blockarray.cloud"
-      ]
+      "peers": ["peer0.speedydelivery.blockarray.cloud"],
+      "certificateAuthorities": ["ca.speedydelivery.blockarray.cloud"]
     }
   },
   "orderers": {

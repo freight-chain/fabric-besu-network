@@ -17,9 +17,7 @@
   },
   "channels": {
     "CHANNEL_NAME": {
-      "orderers": [
-        "orderer.freighttrust.net"
-      ],
+      "orderers": ["orderer.freighttrust.net"],
       "peers": {
         "peer0.fabric.freighttrust.net": {
           "endorsingPeer": true,
@@ -53,9 +51,7 @@
         "peer0.fabric.freighttrust.net",
         "peer1.fabric.freighttrust.net"
       ],
-      "certificateAuthorities": [
-        "ca.freighttrust.net"
-      ]
+      "certificateAuthorities": ["ca.freighttrust.net"]
     },
     "Org2": {
       "mspid": "SpeedyDeliveryMSP",
@@ -63,9 +59,7 @@
         "peer0.speedydelivery.freighttrust.net",
         "peer1.speedydelivery.freighttrust.net"
       ],
-      "certificateAuthorities": [
-        "ca.speedydelivery.freighttrust.net"
-      ]
+      "certificateAuthorities": ["ca.speedydelivery.freighttrust.net"]
     }
   },
   "orderers": {
