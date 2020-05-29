@@ -1,0 +1,470 @@
+/**
+ * Copyright 2020 FreightTrust and Clearing Corporation
+ * BSD-3 License 
+ */
+
+namespace it.freight-trust.com
+
+enum CdlType {
+  o None
+  o TractorTrailers
+  o TruckAndTrailerCombinations
+  o TractorTrailerBuses
+  o TankerVehicles
+  o LivestockCarriers
+  o Flatbed
+  o LargeBuses
+  o SegmentedBuses
+  o BoxTrucks
+  o DumpTrucksWithSmallTrailers
+  o SmallHazmatVehicle
+  o PassengerVan
+  o CombinationVehicle
+}
+
+enum CdlClassType {
+  o ClassA
+  o ClassB
+  o ClassC
+}
+
+abstract event TransactionNotification {
+  o String Type
+}
+
+participant Driver identified by Id {
+  o String Id
+  o Integer CDLNumber
+  o String FirstName
+  o String LastName
+  o DateTime DateOfBirth optional
+  --> Carrier Carrier optional
+  --> DriverPassport Passport optional
+}
+
+participant Shipper identified by Id {
+  o String Id
+  o String Name
+  o String Address
+  o Double Balance optional
+}
+
+transaction CreateShipper {
+  o String Id
+  o String Name
+  o String Address
+  o Double Balance optional
+}
+
+event CreateShipperNotification extends TransactionNotification {
+  --> Shipper Shipper
+}
+
+participant Carrier identified by Id {
+  o String Id
+  o String Name
+  o String Address
+  o Double Balance optional
+  o Double DetentionGraceHours optional
+  o Double DetentionRatePerHour optional
+}
+
+transaction CreateCarrier {
+  o String Id
+  o String Name
+  o String Address
+  o Double Balance optional
+  o Double DetentionGraceHours optional
+  o Double DetentionRatePerHour optional
+}
+
+event CreateCarrierNotification extends TransactionNotification {
+  --> Carrier Carrier
+}
+
+participant Receiver identified by Id {
+  o String Id
+  o String Name
+  o String Address
+  o Double Balance optional
+}
+
+transaction CreateReceiver {
+  o String Id
+  o String Name
+  o String Address
+  o Double Balance optional
+}
+
+event CreateReceiverNotification extends TransactionNotification {
+  --> Receiver Receiver
+}
+
+asset DriverPassport identified by Id {
+  o String Id
+  --> Driver Driver optional
+  o Boolean DrugAndAlchoholCompliance
+  o Boolean MedicalCertification
+  o DateTime ExpirationOfCertificates optional
+  o CdlType[] DriverLicenses
+  o CdlClassType[] DriverLicenseClasses
+}
+
+transaction AddDriver {
+  o String Id
+  o Integer CDLNumber
+  o String FirstName
+  o String LastName
+  o DateTime DateOfBirth optional
+  --> Carrier Carrier optional
+}
+
+transaction CreateDriverPassport {
+  o String Id
+  --> Driver Driver
+  o Boolean DrugAndAlchoholCompliance
+  o Boolean MedicalCertification
+  o DateTime ExpirationOfCertificates optional
+  o CdlType[] DriverLicenses
+  o CdlClassType[] DriverLicenseClasses
+}
+
+event CreateDriverPassportNotification extends TransactionNotification {
+  --> Driver Driver
+  --> DriverPassport Passport
+}
+
+transaction UpdateDriverPassport {
+  --> DriverPassport Passport
+  o Boolean MedicalCertification optional
+  o Boolean DrugAndAlchoholCompliance optional
+  o DateTime ExpirationOfCertificates optional
+  o CdlType[] DriverLicenses optional
+  o CdlClassType[] DriverLicenseClasses optional
+}
+
+event UpdateDriverPassportNotification extends TransactionNotification {
+  --> DriverPassport Passport
+}
+
+transaction ChangeDriverCarrier {
+    --> Driver Driver
+    --> Carrier NewCarrier
+}
+
+transaction RemoveDriverCarrier {
+    --> Driver Driver
+}
+
+event ChangeDriverCarrierNotification extends TransactionNotification {
+  --> Driver Driver
+}
+
+event AddDriverNotification extends TransactionNotification {
+  --> Driver Driver
+}
+
+event RemoveDriverCarrierNotification extends TransactionNotification {
+  --> Driver Driver
+}
+
+enum DetentionType {
+  o Origin
+  o Destination
+}
+
+asset BillOfLading identified by BolNumber {
+  o String BolNumber
+}
+
+enum DrivingUnitOfMeasure {
+  o Miles
+  o Kilometers
+}
+
+asset Detention identified by Id {
+  o String Id
+  o DetentionType Type
+  o Double Minutes
+  o Boolean IsDetention
+  o DateTime ScheduledDate
+  o DateTime ActualDate
+  o Double GraceMinutes
+  o Double RatePerHour
+  o Boolean Paid
+  --> Load Load
+}
+
+transaction CreateDetention {
+  o String Id
+  o DetentionType Type
+  o Double Minutes
+  o Boolean IsDetention
+  o DateTime ScheduledDate
+  o DateTime ActualDate
+  o Double GraceMinutes
+  o Double RatePerHour
+  o Boolean Paid
+  --> Load Load
+}
+
+event CreateDetentionNotification extends TransactionNotification {
+  --> Detention Detention
+}
+
+asset Quote identified by Id {
+  o String Id
+  o Double Price
+  --> Load Load
+  --> Carrier Carrier
+}
+
+asset Load identified by Id {
+  o String Id
+  o String Description optional
+  o Boolean Completed optional
+  o Boolean Accepted optional
+  o Double TargetPrice optional
+  o DateTime OriginArrivalDate optional
+  o DateTime ScheduledPickupDate
+  o DateTime PickupDate optional
+  o DateTime DestinationArrivalDate optional
+  o DateTime ScheduledDropOffDate
+  o DateTime DropOffDate optional
+  --> Carrier Carrier optional
+  --> Shipper Shipper
+  --> Receiver Receiver
+  --> Driver Driver optional
+}
+
+transaction AssignDriverToLoad {
+  --> Driver Driver
+  --> Load Load
+}
+
+transaction OriginArrival {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+transaction LoadPickup {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+transaction DestinationArrival {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+transaction LoadDropOff {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+event OriginArrivalNotification extends TransactionNotification {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+event LoadPickupNotification extends TransactionNotification {
+  o DateTime DateOccured
+  o Boolean Detention
+  --> Load Load
+}
+
+event DestinationArrivalNotification extends TransactionNotification {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+event LoadDropOffNotification extends TransactionNotification {
+  o DateTime DateOccured
+  o Boolean Detention
+  --> Load Load
+}
+
+event DetentionNotification extends TransactionNotification {
+  o DateTime DateOccured
+  --> Load Load
+}
+
+event AssignDriverToLoadNotification extends TransactionNotification {
+  --> Driver Driver
+  --> Load Load
+}
+
+transaction ListLoad {
+  o String Id
+  o String Description
+  o Double TargetPrice
+  --> Shipper Shipper
+  --> Receiver Receiver
+  o DateTime ScheduledPickupDate
+  o DateTime ScheduledDropOffDate
+}
+
+transaction SubmitQuote {
+  o String Id
+  o Double Price
+  --> Load Load
+  --> Carrier Carrier
+}
+
+transaction AcceptQuote {
+  --> Quote Quote
+}
+
+event ClaimLoadNotification extends TransactionNotification {
+  --> Load Load
+}
+
+event QuoteNotification extends TransactionNotification {
+  o Quote Quote
+}
+
+event QuoteAcceptedNotification extends TransactionNotification {
+  o Quote Quote
+}
+
+event LoadReceivedNotificaion {
+  --> Load Load
+}
+
+enum DailyLogTickType {
+  o OffDuty
+  o SleeperBerth
+  o Driving
+  o OnDutyNotDriving
+}
+
+asset DailyLogDefectsReport identified by Id {
+  o String Id
+  o Boolean DefectsDetected
+  o Boolean DefectsCorrected
+  o Boolean DefectsCorrectionNeeded
+  o String MechanicFirstName
+  o String MechanicLastName
+}
+
+asset DailyLog identified by Id {
+  o String Id
+  o Integer Month
+  o Integer Day
+  o Integer Year
+
+  o Double OdometerOut
+  o Double OdometerIn
+  o DrivingUnitOfMeasure DrivingUnitOfMeasure
+  o Double ActualDistanceDriven
+
+  o String AddressLine1
+  o String AddressLine2
+  o String AddressCity
+  o String AddressState
+  o String AddressZipPostalCode
+  o String FuelLocation
+  o Double Litres
+
+  o Double TotalHoursOffDuty
+  o Double TotalHoursSleeperBerth
+  o Double TotalHoursDriving
+  o Double TotalHoursOnDutyNotDriving
+
+  o String TractorNumber
+  o String TrailerNumber1
+  o String TrailerNumber2
+
+  o String Remarks
+
+  o Boolean Complete
+
+  --> DriverDailyLogTick[] Ticks
+  --> BillOfLading BillOfLading
+  --> Carrier Carrier
+  --> Driver Driver
+  --> DailyLogDefectsReport DefectsReport
+}
+
+asset DriverDailyLogTick identified by Id {
+  o String Id
+  o DailyLogTickType Type
+  o Integer Hour
+  o Boolean AM
+  o Double Lat
+  o Double Lon
+  o String Remarks
+}
+
+transaction CreateDailyLog {
+  o String Id
+  o Integer Month
+  o Integer Day
+  o Integer Year
+
+  o Double OdometerOut
+  o Double OdometerIn
+  o DrivingUnitOfMeasure DrivingUnitOfMeasure
+  o Double ActualDistanceDriven
+
+  o String AddressLine1
+  o String AddressLine2
+  o String AddressCity
+  o String AddressState
+  o String AddressZipPostalCode
+  o String FuelLocation
+  o Double Litres
+
+  o Double TotalHoursOffDuty
+  o Double TotalHoursSleeperBerth
+  o Double TotalHoursDriving
+  o Double TotalHoursOnDutyNotDriving
+
+  o String TractorNumber
+  o String TrailerNumber1
+  o String TrailerNumber2
+
+  o String Remarks
+
+  o Boolean Complete
+
+  --> DriverDailyLogTick[] Ticks
+  --> BillOfLading BillOfLading
+  --> Carrier Carrier
+  --> Driver Driver
+  --> DailyLogDefectsReport DefectsReport
+}
+
+transaction AddTicksToDailyLog {
+  --> DailyLog DailyLog
+  o DriverDailyLogTick[] Ticks
+}
+
+transaction AddDefectReportToDailyLog {
+  --> DailyLog DailyLog
+  o DailyLogDefectsReport DefectsReport
+}
+
+transaction UpdateDefectReportToDailyLog {
+  --> DailyLog DailyLog
+  o DailyLogDefectsReport DefectsReport
+}
+
+event DailyLogCreatedNotification {
+  o DailyLog DailyLog
+}
+
+event DailyLogTicksAddedNotification {
+  --> DailyLog DailyLog
+  o DriverDailyLogTick[] TicksAdded
+}
+
+event DailyLogDefectsNotification {
+  --> DailyLog DailyLog
+  o DailyLogDefectsReport DefectsReportAdded
+}
+
+event DailyLogDefectsUpdatedNotification {
+  --> DailyLog DailyLog
+  o DailyLogDefectsReport DefectsReportUpdated
+}
