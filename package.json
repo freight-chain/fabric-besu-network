@@ -1,0 +1,36 @@
+{
+    "name": "freight-trust-network",
+    "version": "0.3.7",
+    "description": "Freight Trust Business Network",
+    "scripts": {
+        "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/freight-trust-network.bna",
+        "network-install": "composer network install --card PeerAdmin@hlfv1 --archiveFile dist/freight-trust-network.bna",
+        "network-upgrade": "composer network upgrade -n freight-trust-network -V 0.3.7 -c PeerAdmin@hlfv1",
+        "network-start": "composer network start --networkName freight-trust-network --networkVersion 0.3.7 -A admin -S adminpw -c PeerAdmin@hlfv1",
+        "network-import": "composer card import -f admin@freight-trust-network.card",
+        "network-test": "composer network ping -c admin@freight-trust-network",
+        "pretest": "npm run lint",
+        "lint": "eslint .",
+        "test": "nyc mocha -t 0 test/*.js && cucumber-js",
+        "install-fabric-tools": "cd ~/fabric-tools && curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz && tar -xvf fabric-dev-servers.tar.gz && ./teardownFabric.sh && ./startFabric.sh && ./createPeerAdminCard.sh"
+    },
+    "author": "Freight Trust",
+    "email": "sam@freighttrust.com",
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "composer-admin": "^0.19.0",
+        "composer-cli": "^0.19.0",
+        "composer-client": "^0.19.0",
+        "composer-common": "^0.19.0",
+        "composer-connector-embedded": "^0.19.0",
+        "composer-cucumber-steps": "^0.19.0",
+        "chai": "latest",
+        "chai-as-promised": "latest",
+        "cucumber": "^2.2.0",
+        "eslint": "latest",
+        "nyc": "latest",
+        "mkdirp": "latest",
+        "mocha": "latest"
+    },
+    "dependencies": {}
+}
