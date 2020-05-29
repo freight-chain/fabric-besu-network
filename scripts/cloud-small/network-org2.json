@@ -1,127 +1,127 @@
 {
-    "name": "freighttrust-network",
-    "x-type": "hlfv1",
-    "version": "1.0.0",
-    "channels": {
-        "CHANNEL_NAME": {
-            "orderers": [
-                "orderer.freighttrust.net"
-            ],
-            "peers": {
-                "peer0.fabric.freighttrust.net": {
-                    "endorsingPeer": true,
-                    "chaincodeQuery": true,
-                    "eventSource": true,
-                    "ledgerQuery": true
-                },
-                "peer1.fabric.freighttrust.net": {
-                    "endorsingPeer": true,
-                    "chaincodeQuery": true,
-                    "eventSource": true
-                },
-                "peer0.speedydelivery.freighttrust.net": {
-                    "endorsingPeer": true,
-                    "chaincodeQuery": true,
-                    "eventSource": true,
-                    "ledgerQuery": true
-                },
-                "peer1.speedydelivery.freighttrust.net": {
-                    "endorsingPeer": true,
-                    "chaincodeQuery": true,
-                    "eventSource": true
-                }
-            }
-        }
-    },
-    "organizations": {
-        "Org1": {
-            "mspid": "fabricMSP",
-            "peers": [
-                "peer0.fabric.freighttrust.net",
-                "peer1.fabric.freighttrust.net"
-            ],
-            "certificateAuthorities": [
-                "ca.freighttrust.net"
-            ]
-        },
-        "Org2": {
-            "mspid": "SpeedyDeliveryMSP",
-            "peers": [
-                "peer0.speedydelivery.freighttrust.net",
-                "peer1.speedydelivery.freighttrust.net"
-            ],
-            "certificateAuthorities": [
-                "ca.speedydelivery.freighttrust.net"
-            ]
-        }
-    },
-    "orderers": {
-        "orderer.freighttrust.net": {
-            "url": "grpcs://ORG0_ADDRESS:7050",
-            "grpcOptions": {
-                "ssl-target-name-override": "orderer.freighttrust.net"
-            },
-            "tlsCACerts": {
-                "path": "CRYPTO_CONFIG/ordererOrganizations/blockarray.cloud/orderers/orderer.freighttrust.net/tls/ca.crt"
-            }
-        }
-    },
-    "peers": {
+  "name": "freighttrust-network",
+  "x-type": "hlfv1",
+  "version": "1.0.0",
+  "channels": {
+    "CHANNEL_NAME": {
+      "orderers": [
+        "orderer.freighttrust.net"
+      ],
+      "peers": {
         "peer0.fabric.freighttrust.net": {
-            "url": "grpcs://ORG1_ADDRESS:7051",
-            "eventUrl": "grpcs://ORG1_ADDRESS:7053",
-            "grpcOptions": {
-                "ssl-target-name-override": "peer0.fabric.freighttrust.net"
-            },
-            "tlsCACerts": {
-                "path": "CRYPTO_CONFIG/peerOrganizations/fabric.freighttrust.net/peers/peer0.fabric.freighttrust.net/tls/ca.crt"
-            }
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "eventSource": true,
+          "ledgerQuery": true
         },
         "peer1.fabric.freighttrust.net": {
-            "url": "grpcs://ORG1_ADDRESS:8051",
-            "eventUrl": "grpcs://ORG1_ADDRESS:8053",
-            "grpcOptions": {
-                "ssl-target-name-override": "peer1.fabric.freighttrust.net"
-            },
-            "tlsCACerts": {
-                "path": "CRYPTO_CONFIG/peerOrganizations/fabric.freighttrust.net/peers/peer0.fabric.freighttrust.net/tls/ca.crt"
-            }
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "eventSource": true
         },
         "peer0.speedydelivery.freighttrust.net": {
-            "url": "grpcs://ORG2_ADDRESS:9051",
-            "eventUrl": "grpcs://ORG2_ADDRESS:9053",
-            "grpcOptions": {
-                "ssl-target-name-override": "peer0.speedydelivery.freighttrust.net"
-            },
-            "tlsCACerts": {
-                "path": "CRYPTO_CONFIG/peerOrganizations/speedydelivery.freighttrust.net/peers/peer0.speedydelivery.freighttrust.net/tls/ca.crt"
-            }
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "eventSource": true,
+          "ledgerQuery": true
         },
         "peer1.speedydelivery.freighttrust.net": {
-            "url": "grpcs://ORG2_ADDRESS:10051",
-            "eventUrl": "grpcs://ORG2_ADDRESS:10053",
-            "grpcOptions": {
-                "ssl-target-name-override": "peer1.speedydelivery.freighttrust.net"
-            },
-            "tlsCACerts": {
-                "path": "CRYPTO_CONFIG/peerOrganizations/speedydelivery.freighttrust.net/peers/peer0.speedydelivery.freighttrust.net/tls/ca.crt"
-            }
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "eventSource": true
         }
-    },
-    "certificateAuthorities": {
-        "ca.freighttrust.net": {
-            "url": "https://ORG0_ADDRESS:7054",
-            "caName": "ca.freighttrust.net",
-            "httpOptions": {
-                "verify": false
-            }
-        },
-        "ca.speedydelivery.freighttrust.net": {
-            "url": "https://localhost:8054",
-            "caName": "ca-speedydelivery.freighttrust.net",
-            "httpOptions": {
-                "verify": false
-            }
-        }
+      }
     }
+  },
+  "organizations": {
+    "Org1": {
+      "mspid": "fabricMSP",
+      "peers": [
+        "peer0.fabric.freighttrust.net",
+        "peer1.fabric.freighttrust.net"
+      ],
+      "certificateAuthorities": [
+        "ca.freighttrust.net"
+      ]
+    },
+    "Org2": {
+      "mspid": "SpeedyDeliveryMSP",
+      "peers": [
+        "peer0.speedydelivery.freighttrust.net",
+        "peer1.speedydelivery.freighttrust.net"
+      ],
+      "certificateAuthorities": [
+        "ca.speedydelivery.freighttrust.net"
+      ]
+    }
+  },
+  "orderers": {
+    "orderer.freighttrust.net": {
+      "url": "grpcs://ORG0_ADDRESS:7050",
+      "grpcOptions": {
+        "ssl-target-name-override": "orderer.freighttrust.net"
+      },
+      "tlsCACerts": {
+        "path": "CRYPTO_CONFIG/ordererOrganizations/blockarray.cloud/orderers/orderer.freighttrust.net/tls/ca.crt"
+      }
+    }
+  },
+  "peers": {
+    "peer0.fabric.freighttrust.net": {
+      "url": "grpcs://ORG1_ADDRESS:7051",
+      "eventUrl": "grpcs://ORG1_ADDRESS:7053",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.fabric.freighttrust.net"
+      },
+      "tlsCACerts": {
+        "path": "CRYPTO_CONFIG/peerOrganizations/fabric.freighttrust.net/peers/peer0.fabric.freighttrust.net/tls/ca.crt"
+      }
+    },
+    "peer1.fabric.freighttrust.net": {
+      "url": "grpcs://ORG1_ADDRESS:8051",
+      "eventUrl": "grpcs://ORG1_ADDRESS:8053",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer1.fabric.freighttrust.net"
+      },
+      "tlsCACerts": {
+        "path": "CRYPTO_CONFIG/peerOrganizations/fabric.freighttrust.net/peers/peer0.fabric.freighttrust.net/tls/ca.crt"
+      }
+    },
+    "peer0.speedydelivery.freighttrust.net": {
+      "url": "grpcs://ORG2_ADDRESS:9051",
+      "eventUrl": "grpcs://ORG2_ADDRESS:9053",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.speedydelivery.freighttrust.net"
+      },
+      "tlsCACerts": {
+        "path": "CRYPTO_CONFIG/peerOrganizations/speedydelivery.freighttrust.net/peers/peer0.speedydelivery.freighttrust.net/tls/ca.crt"
+      }
+    },
+    "peer1.speedydelivery.freighttrust.net": {
+      "url": "grpcs://ORG2_ADDRESS:10051",
+      "eventUrl": "grpcs://ORG2_ADDRESS:10053",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer1.speedydelivery.freighttrust.net"
+      },
+      "tlsCACerts": {
+        "path": "CRYPTO_CONFIG/peerOrganizations/speedydelivery.freighttrust.net/peers/peer0.speedydelivery.freighttrust.net/tls/ca.crt"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.freighttrust.net": {
+      "url": "https://ORG0_ADDRESS:7054",
+      "caName": "ca.freighttrust.net",
+      "httpOptions": {
+        "verify": false
+      }
+    },
+    "ca.speedydelivery.freighttrust.net": {
+      "url": "https://localhost:8054",
+      "caName": "ca-speedydelivery.freighttrust.net",
+      "httpOptions": {
+        "verify": false
+      }
+    }
+  }
 }
