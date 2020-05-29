@@ -1,0 +1,534 @@
+/**
+ * Copyright 2020 FreightTrust and Clearing Corporation
+ * SPDX:CC-NC-ND:2.5
+ */
+
+// Global settings
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.interchange.network.system.Participant"
+  operation: ALL
+  resource: "org.interchange.network.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.interchange.network.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.interchange.network.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.interchange.network.system.**"
+    action: ALLOW
+}
+
+/**
+ * Rules for participant access
+ */
+
+rule Driver_R_Driver {
+    description: "Grant Driver Participants in it.freighttrust.com namespace READ access to their record"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: READ
+    resource(v): "it.freighttrust.com.Driver"
+    condition: (m.getIdentifier() == v.getIdentifier())
+    action: ALLOW
+}
+
+rule Driver_R_Carrier {
+    description: "Grant Driver Participants in it.freighttrust.com namespace READ access to their assigned Carrier Participant"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: READ
+    resource(v): "it.freighttrust.com.Carrier"
+    condition: (m.Carrier.getIdentifier() == v.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_R_Carrier {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace READ access to their record"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: READ
+    resource(v): "it.freighttrust.com.Carrier"
+    condition: (v.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_R_Driver {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace READ access to owned or unassigned Driver Participants"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: READ
+    resource(v): "it.freighttrust.com.Driver"
+    condition: (v.Carrier == null || v.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_R_Shipper {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace READ access to their record"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: READ
+    resource(v): "it.freighttrust.com.Shipper"
+    condition: (v.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+/**
+ * Rules for asset registry access
+ */
+
+rule Shipper_R_Carrier{
+    description: "Grant Shippers access to Carrier resources"
+    participant: "it.freighttrust.com.Shipper"
+    operation: READ
+    resource: "it.freighttrust.com.Carrier"
+    action: ALLOW
+}
+
+rule Shipper_R_Receiver{
+    description: "Grant Shippers access to Receiver resources"
+    participant: "it.freighttrust.com.Shipper"
+    operation: READ
+    resource: "it.freighttrust.com.Receiver"
+    action: ALLOW
+}
+
+rule Carrier_R_Shipper {
+    description: "Grant Carrier access to Shipper resources"
+    participant: "it.freighttrust.com.Carrier"
+    operation: READ
+    resource: "it.freighttrust.com.Shipper"
+    action: ALLOW
+}
+
+rule Carrier_R_Receiver {
+    description: "Grant Carrier access to Receiver resources"
+    participant: "it.freighttrust.com.Carrier"
+    operation: READ
+    resource: "it.freighttrust.com.Receiver"
+    action: ALLOW
+}
+
+rule Receiver_R_Receiver {
+    description: "Grant Receiver access to Receiver resources"
+    participant: "it.freighttrust.com.Receiver"
+    operation: READ
+    resource: "it.freighttrust.com.Receiver"
+    action: ALLOW
+}
+
+rule Receiver_R_Carrier {
+    description: "Grant Receiver access to Carrier resources"
+    participant: "it.freighttrust.com.Receiver"
+    operation: READ
+    resource: "it.freighttrust.com.Carrier"
+    action: ALLOW
+}
+ 
+rule NetworkAdmin_RU_Carrier {
+    description: "Grant NetworkAdmins access to Carrier resources"
+    participant: "org.interchange.network.system.NetworkAdmin"
+    operation: READ,UPDATE
+    resource: "it.freighttrust.com.Carrier"
+    action: ALLOW
+}
+ 
+rule NetworkAdmin_RU_Shipper {
+    description: "Grant NetworkAdmins access to Shipper resources"
+    participant: "org.interchange.network.system.NetworkAdmin"
+    operation: READ,UPDATE
+    resource: "it.freighttrust.com.Shipper"
+    action: ALLOW
+}
+ 
+rule NetworkAdmin_RU_Receiver {
+    description: "Grant NetworkAdmins access to Receiver resources"
+    participant: "org.interchange.network.system.NetworkAdmin"
+    operation: READ,UPDATE
+    resource: "it.freighttrust.com.Receiver"
+    action: ALLOW
+}
+
+rule Carrier_R_Load {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace READ access to unclaimed or assigned Load assets"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: READ
+    resource(v): "it.freighttrust.com.Load"
+    condition: (v.carrier == null || v.carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_R_Load {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace READ access to their Load assets"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: READ
+    resource(v): "it.freighttrust.com.Load"
+    condition: (v.shipper.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Receiver_R_Load {
+    description: "Grant Receiver Participants in it.freighttrust.com namespace READ access to their Load assets"
+    participant(m): "it.freighttrust.com.Receiver"
+    operation: READ
+    resource(v): "it.freighttrust.com.Load"
+    condition: (v.receiver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_C_Load {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace CREATE access to Load assets"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: CREATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.ListLoad"
+    condition: (v.shipper.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Driver_R_DriverPassport {
+    description: "Grant Driver Participants in it.freighttrust.com namespace READ access to their DriverPassport assets"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: READ
+    resource(v): "it.freighttrust.com.DriverPassport"
+    condition: (v.Driver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_R_DriverPassport {
+    description: "Grant Driver Participants in it.freighttrust.com namespace READ access to their DriverPassport assets"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: READ
+    resource(v): "it.freighttrust.com.DriverPassport"
+    condition: (v.Driver.Carrier == null || v.Driver.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Driver_R_Load {
+    description: "Grant Driver Participants in it.freighttrust.com namespace READ access to their assigned Load assets"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: READ
+    resource(v): "it.freighttrust.com.Load"
+    condition: (v.Driver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_U_DriverPassport {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace UPDATE access to their Driver participants"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.DriverPassport"
+    transaction(tx): "it.freighttrust.com.UpdateDriverPassport"
+    condition: (v.Driver.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_U_Driver_ChangeCarrier {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace UPDATE access to their Driver participants"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Driver"
+    transaction(tx): "it.freighttrust.com.ChangeDriverCarrier"
+    condition: (v.Carrier == null || v.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_U_Driver_RemoveCarrier {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace UPDATE access to their Driver participants"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Driver"
+    transaction(tx): "it.freighttrust.com.RemoveDriverCarrier"
+    condition: (v.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_C_Driver {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace CREATE access to new Driver participants"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource(v): "it.freighttrust.com.Driver"
+    transaction(tx): "it.freighttrust.com.AddDriver"
+    condition: (tx.Carrier == null || tx.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_C_DriverPassport {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace CREATE access to DriverPassport asset"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource(v): "it.freighttrust.com.DriverPassport"
+    transaction(tx): "it.freighttrust.com.CreateDriverPassport"
+    condition: (tx.Driver.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Driver_U_Load_OriginArrival {
+    description: "Grant Driver Participants in it.freighttrust.com namespace UPDATE access to Load assets"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.OriginArrival"
+    condition: (v.Driver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_U_Load_LoadPickup {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace UPDATE access to Load assets"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.LoadPickup"
+    condition: (v.shipper.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Driver_U_Load_DestinationArrival {
+    description: "Grant Driver Participants in it.freighttrust.com namespace UPDATE access to Load assets"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.DestinationArrival"
+    condition: (v.Driver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Receiver_U_Load_LoadDropOff {
+    description: "Grant Receiver Participants in it.freighttrust.com namespace UPDATE access to Load assets"
+    participant(m): "it.freighttrust.com.Receiver"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.LoadDropOff"
+    condition: (v.receiver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_U_Load_AssignDriverToLoad {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace UPATE access to add their Driver to a Load"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.AssignDriverToLoad"
+    condition: (v.carrier.getIdentifier() == m.getIdentifier() && tx.Driver.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_R_Quote {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace READ access to their Quotes"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: READ
+    resource(v): "it.freighttrust.com.Quote"
+    condition: (v.Load.shipper.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_R_Quote {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace READ access to their Quotes"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: READ
+    resource(v): "it.freighttrust.com.Quote"
+    condition: (v.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_C_Quote {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace CREATE access to a Quote"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource(v): "it.freighttrust.com.Quote"
+    transaction(tx): "it.freighttrust.com.SubmitQuote"
+    condition: (tx.Carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_U_Load_AcceptQuote {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace UPATE access to add a Carrier to a Load"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: UPDATE
+    resource(v): "it.freighttrust.com.Load"
+    transaction(tx): "it.freighttrust.com.AcceptQuote"
+    condition: (v.shipper.getIdentifier() == m.getIdentifier() && tx.Quote.Load.shipper.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Driver_R_Detention {
+    description: "Grant Driver Participants in it.freighttrust.com namespace READ access to their Load Detention assets"
+    participant(m): "it.freighttrust.com.Driver"
+    operation: READ
+    resource(v): "it.freighttrust.com.Detention"
+    condition: (v.Load.Driver.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Carrier_R_Detention {
+    description: "Grant Carrier Participants in it.freighttrust.com namespace READ access to their Load Detention assets"
+    participant(m): "it.freighttrust.com.Carrier"
+    operation: READ
+    resource(v): "it.freighttrust.com.Detention"
+    condition: (v.Load.carrier.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule Shipper_R_Detention {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace READ access to their Load Detention assets"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: READ
+    resource(v): "it.freighttrust.com.Detention"
+    condition: (v.Load.shipper.getIdentifier() == m.getIdentifier() && v.Type == 'Origin')
+    action: ALLOW
+}
+
+rule Receiver_R_Detention {
+    description: "Grant Receiver Participants in it.freighttrust.com namespace READ access to their Load Detention assets"
+    participant(m): "it.freighttrust.com.Receiver"
+    operation: READ
+    resource(v): "it.freighttrust.com.Detention"
+    condition: (v.Load.receiver.getIdentifier() == m.getIdentifier() && v.Type == 'Destination')
+    action: ALLOW
+}
+
+rule Shipper_C_Detention {
+    description: "Grant Shipper Participants in it.freighttrust.com namespace CREATE access to Detention"
+    participant(m): "it.freighttrust.com.Shipper"
+    operation: CREATE
+    resource(v): "it.freighttrust.com.Detention"
+    transaction(tx): "it.freighttrust.com.LoadPickup"
+    condition: (v.Load.shipper.getIdentifier() == m.getIdentifier() && v.Type == 'Origin')
+    action: ALLOW
+}
+
+rule Receiver_C_Detention {
+    description: "Grant Receiver Participants in it.freighttrust.com namespace CREATE access to Detention"
+    participant(m): "it.freighttrust.com.Receiver"
+    operation: CREATE
+    resource(v): "it.freighttrust.com.Detention"
+    transaction(tx): "it.freighttrust.com.LoadDropOff"
+    condition: (v.Load.receiver.getIdentifier() == m.getIdentifier() && v.Type == 'Destination')
+    action: ALLOW
+}
+
+/**
+ * Rules for transaction invocations
+ */
+
+rule Carrier_C_AddDriver {
+    description: "Grant Carriers access to invoke AddDriver transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.AddDriver"
+    action: ALLOW
+}
+
+rule Carrier_C_UpdateDriverPassport {
+    description: "Grant Carriers access to invoke UpdateDriverPassport transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.UpdateDriverPassport"
+    action: ALLOW
+}
+
+rule Carrier_C_ChangeDriverCarrier {
+    description: "Grant Carriers access to invoke ChangeDriverCarrier transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.ChangeDriverCarrier"
+    action: ALLOW
+}
+
+rule Carrier_C_RemoveDriverCarrier {
+    description: "Grant Carriers access to invoke RemoveDriverCarrier transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.RemoveDriverCarrier"
+    action: ALLOW
+}
+
+rule Driver_C_OriginArrival {
+    description: "Grant Driver access to invoke OriginArrival transaction"
+    participant: "it.freighttrust.com.Driver"
+    operation: CREATE
+    resource: "it.freighttrust.com.OriginArrival"
+    action: ALLOW
+}
+
+rule Shipper_C_LoadPickup {
+    description: "Grant Shipper access to invoke LoadPickup transaction"
+    participant: "it.freighttrust.com.Shipper"
+    operation: CREATE
+    resource: "it.freighttrust.com.LoadPickup"
+    action: ALLOW
+}
+
+rule Driver_C_DestinationArrival {
+    description: "Grant Driver access to invoke DestinationArrival transaction"
+    participant: "it.freighttrust.com.Driver"
+    operation: CREATE
+    resource: "it.freighttrust.com.DestinationArrival"
+    action: ALLOW
+}
+
+rule Receiver_C_LoadDropOff {
+    description: "Grant Driver access to invoke LoadDropOff transaction"
+    participant: "it.freighttrust.com.Receiver"
+    operation: CREATE
+    resource: "it.freighttrust.com.LoadDropOff"
+    action: ALLOW
+}
+
+rule Carrier_C_AssignDriverToLoad {
+    description: "Grant Carriers access to invoke AssignDriverToLoad transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.AssignDriverToLoad"
+    action: ALLOW
+}
+
+rule Carrier_C_SubmitQuote {
+    description: "Grant Carriers access to invoke SubmitQuote transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.SubmitQuote"
+    action: ALLOW
+}
+
+rule Carrier_C_CreateDriverPassport {
+    description: "Grant Carriers access to invoke CreateDriverPassport transaction"
+    participant: "it.freighttrust.com.Carrier"
+    operation: CREATE
+    resource: "it.freighttrust.com.CreateDriverPassport"
+    action: ALLOW
+}
+
+rule Shipper_C_AcceptQuote {
+    description: "Grant Shippers access to invoke AcceptQuote transaction"
+    participant: "it.freighttrust.com.Shipper"
+    operation: CREATE
+    resource: "it.freighttrust.com.AcceptQuote"
+    action: ALLOW
+}
+
+rule Shipper_C_ListLoad {
+    description: "Grant Shippers access to invoke ListLoad transaction"
+    participant: "it.freighttrust.com.Shipper"
+    operation: CREATE
+    resource: "it.freighttrust.com.ListLoad"
+    action: ALLOW
+}
+
+/**
+ * Make sure all resources are locked down by default.
+ * If permissions need to be granted to certain resources, that should happen
+ * above this rule. Anything not explicitly specified gets locked down.
+ */
+rule Default {
+    description: "Deny all participants access to all resources"
+    participant: "ANY"
+    operation: ALL
+    resource: "it.freighttrust.com.*"
+    action: DENY
+}
