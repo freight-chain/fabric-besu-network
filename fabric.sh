@@ -7,7 +7,7 @@ while getopts ":c:" opt; do
     c)
       echo "-c channel name: $OPTARG" >&2
       CHANNEL_NAME=$OPTARG
-    ;;
+      ;;
   esac
 done
 

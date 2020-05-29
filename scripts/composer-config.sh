@@ -4,7 +4,7 @@ function replacePaths() {
   echo "copying network/org json config"
   # sed on MacOSX does not support -i flag with a null extension. We will use
   # 't' for our back-up's extension and depete it at the end of the function
-  ARCH=`uname -s | grep Darwin`
+  ARCH=$(uname -s | grep Darwin)
   if [ "$ARCH" == "Darwin" ]; then
     OPTS="-it"
   else
@@ -57,24 +57,23 @@ while getopts ":c:s:e:" opt; do
     c)
       echo "-c channel name: $OPTARG" >&2
       CHANNEL_NAME=$OPTARG
-    ;;
+      ;;
     s)
       echo "-s size: $OPTARG" >&2
       SIZE=$OPTARG
-    ;;
+      ;;
     e)
       echo "-e environment: $OPTARG" >&2
       ENVIRONMENT=$OPTARG
-      if [ "$ENVIRONMENT" == "net" ]
-      then
+      if [ "$ENVIRONMENT" == "net" ]; then
         ORG1_ADDRESS="192.81.217.73"
         ORG2_ADDRESS="198.199.72.230"
         # Crypto Config dir should match your install
-        CRYPTO_CONFIG=/home/freight-trust-fabric/crypto-config 
+        CRYPTO_CONFIG=/home/freight-trust-fabric/crypto-config
       else
         echo "environment: local"
       fi
-    ;;
+      ;;
   esac
 done
 
