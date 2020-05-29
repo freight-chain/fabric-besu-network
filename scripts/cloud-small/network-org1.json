@@ -1,0 +1,108 @@
+{
+    "name": "banetwork",
+    "x-type": "hlfv1",
+    "version": "1.0.0",
+    "client": {
+        "organization": "ArrayOfBlocks",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300",
+                    "eventHub": "300",
+                    "eventReg": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "CHANNEL_NAME": {
+            "orderers": [
+                "orderer.blockarray.cloud"
+            ],
+            "peers": {
+                "peer0.arrayofblocks.blockarray.cloud": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true,
+                    "ledgerQuery": true
+                },
+                "peer0.speedydelivery.blockarray.cloud": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "eventSource": true,
+                    "ledgerQuery": true
+                }
+            }
+        }
+    },
+    "organizations": {
+        "ArrayOfBlocks": {
+            "mspid": "ArrayOfBlocksMSP",
+            "peers": [
+                "peer0.arrayofblocks.blockarray.cloud"
+            ],
+            "certificateAuthorities": [
+                "ca.arrayofblocks.blockarray.cloud"
+            ]
+        },
+        "SpeedyDelivery": {
+            "mspid": "SpeedyDeliveryMSP",
+            "peers": [
+                "peer0.speedydelivery.blockarray.cloud"
+            ],
+            "certificateAuthorities": [
+                "ca.speedydelivery.blockarray.cloud"
+            ]
+        }
+    },
+    "orderers": {
+        "orderer.blockarray.cloud": {
+            "url": "grpcs://ORG0_ADDRESS:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer.blockarray.cloud"
+            },
+            "tlsCACerts": {
+                "path": "CRYPTO_CONFIG/ordererOrganizations/blockarray.cloud/orderers/orderer.blockarray.cloud/tls/ca.crt"
+            }
+        }
+    },
+    "peers": {
+        "peer0.arrayofblocks.blockarray.cloud": {
+            "url": "grpcs://ORG1_ADDRESS:7051",
+            "eventUrl": "grpcs://ORG1_ADDRESS:7053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.arrayofblocks.blockarray.cloud"
+            },
+            "tlsCACerts": {
+                "path": "CRYPTO_CONFIG/peerOrganizations/arrayofblocks.blockarray.cloud/peers/peer0.arrayofblocks.blockarray.cloud/tls/ca.crt"
+            }
+        },
+        "peer0.speedydelivery.blockarray.cloud": {
+            "url": "grpcs://ORG2_ADDRESS:7051",
+            "eventUrl": "grpcs://ORG2_ADDRESS:7053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.speedydelivery.blockarray.cloud"
+            },
+            "tlsCACerts": {
+                "path": "CRYPTO_CONFIG/peerOrganizations/speedydelivery.blockarray.cloud/peers/peer0.speedydelivery.blockarray.cloud/tls/ca.crt"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.arrayofblocks.blockarray.cloud": {
+            "url": "https://ORG1_ADDRESS:7054",
+            "caName": "ca.arrayofblocks.blockarray.cloud",
+            "httpOptions": {
+                "verify": false
+            }
+        },
+        "ca.speedydelivery.blockarray.cloud": {
+            "url": "https://ORG2_ADDRESS:7054",
+            "caName": "ca.speedydelivery.blockarray.cloud",
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
